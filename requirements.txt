@@ -1,0 +1,10 @@
+streamlit
+google-genai
+python-pptx
+pypdf
+sentence-transformers
+chromadb
+python-dotenv
+torch
+numpy
+
