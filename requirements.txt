@@ -2,9 +2,5 @@ streamlit
 google-genai
 python-pptx
 pypdf
-sentence-transformers
-chromadb==0.5.5
-protobuf==4.25.3
 python-dotenv
-torch
 numpy
