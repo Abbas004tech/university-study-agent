@@ -1,19 +1,5 @@
 from pptx import Presentation
 from pypdf import PdfReader
-from sentence_transformers import SentenceTransformer
-import chromadb
-
-embedding_model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
-)
-
-client = chromadb.PersistentClient(
-    path="./chroma_db"
-)
-
-collection = client.get_or_create_collection(
-    name="study_material"
-)
 
 
 def extract_text_from_pptx(file_path):
@@ -30,13 +16,11 @@ def extract_text_from_pptx(file_path):
 
 
 def extract_text_from_pdf(file_path):
-
     reader = PdfReader(file_path)
 
     text = ""
 
     for page in reader.pages:
-
         page_text = page.extract_text()
 
         if page_text:
@@ -45,7 +29,7 @@ def extract_text_from_pdf(file_path):
     return text
 
 
-def chunk_text(text, chunk_size=500):
+def chunk_text(text, chunk_size=4000):
 
     chunks = []
 
@@ -53,34 +37,3 @@ def chunk_text(text, chunk_size=500):
         chunks.append(text[i:i + chunk_size])
 
     return chunks
-
-
-def store_chunks(chunks):
-
-    existing = collection.count()
-
-    for i, chunk in enumerate(chunks):
-
-        embedding = embedding_model.encode(
-            chunk
-        ).tolist()
-
-        collection.add(
-            ids=[str(existing + i)],
-            embeddings=[embedding],
-            documents=[chunk]
-        )
-
-
-def retrieve_context(question):
-
-    query_embedding = embedding_model.encode(
-        question
-    ).tolist()
-
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=3
-    )
-
-    return results["documents"][0]
