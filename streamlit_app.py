@@ -9,8 +9,10 @@ from rag import (
     chunk_text
 )
 
+from config import GEMINI_API_KEY
+
 client = genai.Client(
-    api_key=os.environ["GEMINI_API_KEY"]
+    api_key=GEMINI_API_KEY
 )
 
 st.set_page_config(
@@ -59,6 +61,7 @@ option = st.selectbox(
         "Generate MCQs",
         "Generate Flashcards",
         "Generate Summary",
+        "Generate Notes",
         "Important Exam Questions"
     ]
 )
@@ -113,7 +116,25 @@ Generate a study summary from:
 
 {context}
 """
+        elif option == "Generate Notes":
 
+            prompt = f"""
+Create detailed study notes from the provided study material.
+
+Requirements:
+- Use proper headings and subheadings
+- Explain concepts in simple language
+- Include definitions
+- Include important facts
+- Include exam-focused points
+- Use bullet points where needed
+- Organize notes for easy revision
+- Make notes detailed and comprehensive
+
+Study Material:
+
+{context}
+"""
         else:
 
             prompt = f"""
