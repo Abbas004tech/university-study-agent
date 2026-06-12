@@ -3,3 +3,5 @@ google-genai
 python-pptx
 pypdf
 python-dotenv
+reportlab
+python-docx
